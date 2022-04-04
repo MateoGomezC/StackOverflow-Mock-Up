@@ -1,0 +1,76 @@
+﻿@model IEnumerable<StackOverflow.Models.Question>
+
+@{
+    ViewData["Title"] = "All Questions";
+}
+
+<h1>All Questions</h1>
+
+<p>
+    <a asp-action="CreateQuestion">Create a new question</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+        <th>
+            Title    
+        </th>
+        <th>
+            Content
+        </th>
+        <th>
+            User
+        </th>
+        <th>
+            Tag
+        </th>
+        <th>
+            Vote
+        </th>
+        <th>
+            # Answers
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Delete
+        </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tag.TagName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vote)
+            </td>
+            <td>
+                @item.Answers.Count()
+            </td>
+            <td>
+                @item.Date.ToString("MM/dd/yyyy")
+            </td>
+            <td>
+                <a asp-action="DeleteQuestion" asp-route-questionId="@item.Id">Delete this question</a>
+            </td>
+            <td>
+                <a asp-action="CreateAnswer" asp-controller="Answer" asp-route-questionId="@item.Id">Answer this question</a> |
+                <a asp-action="Details" asp-route-questionId="@item.Id">Question Details</a> |            
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

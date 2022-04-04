@@ -1,0 +1,125 @@
+﻿@model StackOverflow.Models.Question
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Question</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.Email)
+            @Html.DisplayFor(model => model.User.Reputation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tag)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tag.TagName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vote)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vote)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Date.ToString("MM/dd/yyyy")
+        </dd>
+        <dt class = "col-sm-2">
+            Comments Links
+        </dt>
+        <dd class = "col-sm-10">
+            <a asp-action="CreateComment" asp-controller="Comment" asp-route-questionId="@Model.Id">Add a comment</a> <br />
+            <a asp-action="Details" asp-controller="Comment" asp-route-questionId="@Model.Id">See comments</a>            
+        </dd>
+        @if(ViewBag.UserId != Model.User.Email)
+        {
+        <dt class = "col-sm-2">
+            Votes
+        </dt>
+        <dd class = "col-sm-10">
+            <a asp-action="Votes" asp-controller="Home" asp-route-questionId="@Model.Id" asp-route-voteValue="1">Upvote</a>
+            <a asp-action="Votes" asp-controller="Home" asp-route-questionId="@Model.Id" asp-route-voteValue="-1">Downvote</a>            
+        </dd>            
+        }
+    </dl>
+    <ol>
+        @foreach(var answer in @Model.Answers.OrderByDescending(a => a.IsCorrect))
+        {
+            <li>
+                @if(answer.IsCorrect == true)
+                {
+                    <h5>This is the correct answer!!</h5>
+                }
+                @if(!Model.Answers.Any(a => a.IsCorrect == true) && ViewBag.UserId == answer.User.Email)
+                {
+                    <a asp-action="CorrectAnswer" asp-controller="Home" asp-route-answerId="@answer.Id" asp-route-questionId="@Model.Id">Mark as Correct!</a>
+                }
+                <dl class="row">
+                    <dt class = "col-sm-2">
+                        @Html.DisplayNameFor(answer => answer.Content)
+                    </dt>
+                    <dd class = "col-sm-10">
+                        @answer.Content
+                    </dd>
+                    <dt class = "col-sm-2">
+                        User
+                    </dt>
+                    <dd class = "col-sm-10">
+                        @answer.User.Email
+                        @answer.User.Reputation
+                    </dd>
+                    <dt class = "col-sm-2">
+                        Votes
+                    </dt>
+                    <dd class = "col-sm-10">
+                        @answer.Vote
+                    </dd>
+                    @if(ViewBag.UserId != answer.User.Email)
+                    {                        
+                        <dt class = "col-sm-2">
+                            Vote
+                        </dt>
+                        <dd class = "col-sm-10">
+                            <a asp-action="Votes" asp-controller="Home" asp-route-questionId="@Model.Id" asp-route-answerId="@answer.Id" asp-route-voteValue="1">Upvote</a> <br>
+                            <a asp-action="Votes" asp-controller="Home" asp-route-questionId="@Model.Id" asp-route-answerId="@answer.Id" asp-route-voteValue="-1">Downvote</a>            
+                        </dd>
+                    }
+                    <dt class = "col-sm-2">
+                        Comments link
+                    </dt>
+                    <dd class = "col-sm-10">
+                        <a asp-action="CreateComment" asp-controller="Comment" asp-route-answerId="@answer.Id">Add a comment</a>
+                        <a asp-action="Details" asp-controller="Comment" asp-route-answerId="@answer.Id">See comments</a>
+                    </dd>
+                </dl>
+            </li>
+        }
+    </ol>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<StackOverflow.Models.Question>
+
+@{
+    ViewData["Title"] = "AllQuestions";
+}
+
+<h1>Questions</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Content
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                Tag
+            </th>
+            <th>
+                Vote
+            </th>
+            <th>
+                # Answers
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tag.TagName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vote)
+            </td>
+            <td>
+                @item.Answers.Count()
+            </td>
+            <td>
+                <a asp-action="CreateAnswer" asp-controller="Answer" asp-route-questionId="@item.Id">Answer this question</a> |
+                <a asp-action="Details" asp-controller="Question" asp-route-questionId="@item.Id">Question Details</a> |            
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

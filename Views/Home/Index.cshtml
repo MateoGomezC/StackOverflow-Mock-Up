@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<h1 class="display-4">Hey Zach this is the INDEX!</h1>
+
+<ol>
+    <li><a asp-action="Index" asp-controller="Question">Recent Questions</a></li>
+    <li><a asp-action="CreateQuestion" asp-controller="Question">Create a new question</a></li>
+    <li><a asp-action="CreateRole" asp-controller="Home">Set a new Role</a></li>
+    <li><a asp-action="AllQuestions" asp-controller="Question">Delete questions (ONLY ACCESS AS "ADMINISTRATOR")</a></li>
+</ol>

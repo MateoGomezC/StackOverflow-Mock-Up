@@ -1,0 +1,79 @@
+﻿@model PagedList.IPagedList<StackOverflow.Models.Question>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Recent Questions";
+}
+
+<h2>Recent Questions</h2>
+
+<p>
+    <a asp-action="CreateQuestion">Create a new question</a>
+</p>
+
+<p>
+    <a asp-action="Index" asp-controller="Home">Back to the index</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Title    
+        </th>
+        <th>
+            Content
+        </th>
+        <th>
+            User
+        </th>
+        <th>
+            Tag
+        </th>
+        <th>
+            Vote
+        </th>
+        <th>
+            @Html.ActionLink("# Answers", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter=ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter=ViewBag.CurrentFilter })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                <a asp-action="TagsView" asp-controller="Home" asp-route-tagId="@item.TagId">@Html.DisplayFor(modelItem => item.Tag.TagName)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vote)
+            </td>
+            <td>
+                @item.Answers.Count()
+            </td>
+            <td>
+                @item.Date.ToString("MM/dd/yyyy")
+            </td>
+            <td>
+                <a asp-action="CreateAnswer" asp-controller="Answer" asp-route-questionId="@item.Id">Answer this question</a> |
+                <a asp-action="Details" asp-route-questionId="@item.Id">Question Details</a> |            
+            </td>
+        </tr>
+}
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@*@Html.PagedListPager(Model, page => Url.Action("Index", 
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@

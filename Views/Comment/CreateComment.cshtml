@@ -1,0 +1,41 @@
+﻿@model StackOverflow.Models.Comment
+
+@{
+    ViewData["Title"] = "CreateComment";
+}
+
+<h1>CreateComment</h1>
+
+<h4>Comment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateComment" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea name="content" asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if(ViewBag.QuestionId != null)
+                {
+                <input type="hidden" value="@ViewBag.QuestionId" name="questionId" />
+                }
+                @if(ViewBag.AnswerId != null)
+                {
+                <input type="hidden" value="@ViewBag.AnswerId" name="answerId" />
+                }
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
